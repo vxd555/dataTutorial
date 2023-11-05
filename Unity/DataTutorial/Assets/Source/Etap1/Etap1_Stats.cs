@@ -1,13 +1,15 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Etap1_Stats : BattleSystem
 {
-	[SerializeField] private Transform hero;
-	[SerializeField] private Transform enemy;
+	[Header("Bindings")]
+	[SerializeField] protected Transform hero;
+	[SerializeField] protected Transform enemy;
+	[SerializeField] protected Button attack = null;
 
+	[Header("Stats")]
 	public int enemyHealthMax;
 	public int enemyHealth;
 	public int enemyDamage;
@@ -15,7 +17,6 @@ public class Etap1_Stats : BattleSystem
 	public int heroHealth;
 	public int heroDamage;
 
-	public Button attack = null;
 
 	public void Start()
 	{
@@ -47,7 +48,6 @@ public class Etap1_Stats : BattleSystem
 	{
 		base.DealDamageFromEnemy();
 
-		
 		heroHealth -= enemyDamage;
 		if(heroHealth <= 0)
 		{
@@ -57,7 +57,7 @@ public class Etap1_Stats : BattleSystem
 		battleUI.SetBar((float)heroHealth / (float)heroHealthMax, true);
 	}
 
-	public void AttackHero()
+	public virtual void AttackHero()
 	{
 		attack.gameObject.SetActive(false);
 
@@ -68,7 +68,7 @@ public class Etap1_Stats : BattleSystem
 		sequence.Play();
 	}
 
-	public void AttackEnemy()
+	public virtual void AttackEnemy()
 	{
 		DealDamageFromHero();
 		if(enemyHealth == 0)
@@ -81,7 +81,7 @@ public class Etap1_Stats : BattleSystem
 		sequence.Play();
 	}
 
-	private void FinishTurn()
+	protected virtual void FinishTurn()
 	{
 		DealDamageFromEnemy();
 		if(heroHealth == 0)
